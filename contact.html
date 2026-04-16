@@ -65,25 +65,28 @@
           </div>
         </div>
 
-        <form class="contact-form-panel" action="mailto:stacrobi@gmail.com" method="post" enctype="text/plain">
+        <form class="contact-form-panel" action="https://formsubmit.co/stacrobi@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="New portfolio inquiry from Stacey Robinson website">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="display:none">
           <label class="contact-form-field">
             <span>Your Name*</span>
-            <input type="text" name="name" autocomplete="name">
+            <input type="text" name="name" autocomplete="name" required>
           </label>
 
           <label class="contact-form-field">
             <span>Email Address*</span>
-            <input type="email" name="email" autocomplete="email">
+            <input type="email" name="email" autocomplete="email" required>
           </label>
 
           <label class="contact-form-field">
             <span>Subject*</span>
-            <input type="text" name="subject">
+            <input type="text" name="subject" required>
           </label>
 
           <label class="contact-form-field contact-form-field-large">
             <span>Tell me a little about your learning need or project goals*</span>
-            <textarea name="message" rows="5"></textarea>
+            <textarea name="message" rows="5" required></textarea>
           </label>
 
           <div class="contact-form-actions">
