@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Process Clarity eLearning Series thumbnail</title>
+  <desc id="desc">Abstract editorial thumbnail for a process training project.</desc>
+  <rect width="800" height="600" fill="#f4eee8"/>
+  <rect x="54" y="54" width="692" height="492" rx="30" fill="#fffdf9" stroke="#ded6cb" stroke-width="4"/>
+  <path d="M152 196c48-54 104-82 168-82 87 0 160 50 230 50 45 0 86-14 126-40" fill="none" stroke="#b66f44" stroke-width="12" stroke-linecap="round"/>
+  <path d="M152 286c48-54 104-82 168-82 87 0 160 50 230 50 45 0 86-14 126-40" fill="none" stroke="#d7c6b6" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="214" cy="378" r="38" fill="#b66f44"/>
+  <circle cx="400" cy="378" r="38" fill="#d8c4af"/>
+  <circle cx="586" cy="378" r="38" fill="#1f1b18"/>
+  <path d="M252 378h110M438 378h110" stroke="#b66f44" stroke-width="8" stroke-linecap="round"/>
+  <text x="70" y="476" fill="#1f1b18" font-family="DM Sans, Arial, sans-serif" font-size="28" letter-spacing="4">PROCESS TRAINING</text>
+  <text x="70" y="520" fill="#1f1b18" font-family="Cormorant Garamond, Georgia, serif" font-size="56">Clarity Series</text>
+</svg>

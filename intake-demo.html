@@ -1,0 +1,1200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Request Intake Demo | Stacey Robinson</title>
+  <meta
+    name="description"
+    content="Interactive AI-enabled learning intake demo that captures project needs, summarizes scope, and recommends a first-pass learning approach."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --intake-bg: linear-gradient(180deg, #f8f3ec 0%, #f2ede5 100%);
+      --intake-panel: #fffdf9;
+      --intake-panel-soft: #f5efe7;
+      --intake-ink: #201b17;
+      --intake-muted: #6f655c;
+      --intake-line: #ded4c8;
+      --intake-accent: #b66f44;
+      --intake-accent-dark: #8d4f2e;
+      --intake-success: #2f6f53;
+      --intake-shadow: 0 20px 45px rgba(32, 27, 23, 0.08);
+      --intake-radius: 24px;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, rgba(182, 111, 68, 0.12), transparent 24%), var(--intake-bg);
+    }
+
+    .intake-shell {
+      display: grid;
+      gap: 28px;
+      padding: 36px 40px 56px;
+    }
+
+    .intake-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(260px, 360px);
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .intake-hero-card,
+    .intake-status-card,
+    .intake-form-panel,
+    .intake-summary-panel {
+      background: var(--intake-panel);
+      border: 1px solid var(--intake-line);
+      border-radius: var(--intake-radius);
+      box-shadow: var(--intake-shadow);
+    }
+
+    .intake-hero-card {
+      padding: 34px;
+      background:
+        linear-gradient(135deg, rgba(182, 111, 68, 0.08), rgba(255, 255, 255, 0.8)),
+        var(--intake-panel);
+    }
+
+    .intake-kicker {
+      margin: 0 0 14px;
+      color: var(--intake-accent);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .intake-hero-card h1 {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: clamp(2.5rem, 4vw, 4.4rem);
+      line-height: 0.97;
+      letter-spacing: -0.04em;
+    }
+
+    .intake-hero-card p {
+      max-width: 58ch;
+      margin: 18px 0 0;
+      line-height: 1.75;
+      color: var(--intake-muted);
+    }
+
+    .intake-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .intake-chip {
+      padding: 9px 13px;
+      border-radius: 999px;
+      background: rgba(182, 111, 68, 0.1);
+      color: var(--intake-accent-dark);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .intake-status-card {
+      padding: 28px;
+      display: grid;
+      gap: 18px;
+      align-content: start;
+      background: linear-gradient(180deg, #fffdf9 0%, #fbf5ee 100%);
+    }
+
+    .status-title {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--intake-ink);
+      font-weight: 700;
+    }
+
+    .status-copy {
+      margin: 0;
+      color: var(--intake-muted);
+      line-height: 1.7;
+    }
+
+    .status-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .status-list li {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: var(--intake-panel-soft);
+      border: 1px solid rgba(182, 111, 68, 0.12);
+    }
+
+    .status-list strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--intake-ink);
+      font-size: 0.94rem;
+    }
+
+    .status-list span {
+      color: var(--intake-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .intake-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(320px, 420px);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .intake-form-panel {
+      padding: 30px;
+    }
+
+    .intake-summary-panel {
+      position: sticky;
+      top: 20px;
+      padding: 26px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .intake-section {
+      padding: 0;
+      margin: 0 0 28px;
+      border: 0;
+    }
+
+    .intake-section:last-of-type {
+      margin-bottom: 24px;
+    }
+
+    .intake-section legend {
+      width: 100%;
+      padding: 0 0 12px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid var(--intake-line);
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .section-note {
+      margin: 0 0 16px;
+      color: var(--intake-muted);
+      line-height: 1.65;
+    }
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px 18px;
+    }
+
+    .input-block {
+      display: grid;
+      gap: 7px;
+    }
+
+    .input-block.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--intake-ink);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--intake-line);
+      border-radius: 16px;
+      background: #fff;
+      color: var(--intake-ink);
+      font: inherit;
+      padding: 14px 16px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    }
+
+    textarea {
+      min-height: 114px;
+      resize: vertical;
+      line-height: 1.65;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--intake-accent);
+      box-shadow: 0 0 0 4px rgba(182, 111, 68, 0.14);
+      transform: translateY(-1px);
+    }
+
+    .field-hint {
+      color: var(--intake-muted);
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .button,
+    .button-ghost,
+    .button-secondary,
+    .button-accent {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+      cursor: pointer;
+    }
+
+    .button:hover,
+    .button-ghost:hover,
+    .button-secondary:hover,
+    .button-accent:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-accent {
+      background: var(--intake-ink);
+      color: #fff;
+      box-shadow: 0 14px 26px rgba(32, 27, 23, 0.14);
+    }
+
+    .button-secondary {
+      background: var(--intake-panel-soft);
+      color: var(--intake-ink);
+      border-color: var(--intake-line);
+    }
+
+    .button-ghost {
+      background: transparent;
+      color: var(--intake-accent-dark);
+      border-color: rgba(182, 111, 68, 0.25);
+    }
+
+    .toast {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(47, 111, 83, 0.08);
+      border: 1px solid rgba(47, 111, 83, 0.2);
+      color: var(--intake-success);
+      font-weight: 500;
+      line-height: 1.55;
+    }
+
+    .summary-heading h2 {
+      margin: 0;
+      font-family: "Cormorant Garamond", serif;
+      font-size: 2.2rem;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .summary-heading p {
+      margin: 10px 0 0;
+      color: var(--intake-muted);
+      line-height: 1.7;
+    }
+
+    .summary-kpis {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-kpi {
+      padding: 16px;
+      border-radius: 18px;
+      background: var(--intake-panel-soft);
+      border: 1px solid rgba(182, 111, 68, 0.12);
+    }
+
+    .summary-kpi strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.4rem;
+      line-height: 1.1;
+    }
+
+    .summary-kpi span {
+      color: var(--intake-muted);
+      font-size: 0.88rem;
+    }
+
+    .summary-card {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--intake-line);
+      background: linear-gradient(180deg, #fffdf9 0%, #faf4ec 100%);
+    }
+
+    .summary-card h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .summary-card p,
+    .summary-card ul {
+      margin: 0;
+      color: var(--intake-muted);
+      line-height: 1.7;
+    }
+
+    .summary-card ul {
+      padding-left: 18px;
+    }
+
+    .summary-card li + li {
+      margin-top: 8px;
+    }
+
+    .summary-card.recommendation {
+      background:
+        linear-gradient(135deg, rgba(182, 111, 68, 0.12), rgba(255, 255, 255, 0.9)),
+        var(--intake-panel);
+      border-color: rgba(182, 111, 68, 0.25);
+    }
+
+    .recommendation-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      background: rgba(182, 111, 68, 0.14);
+      color: var(--intake-accent-dark);
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .summary-footer {
+      display: grid;
+      gap: 12px;
+    }
+
+    .summary-note {
+      color: var(--intake-muted);
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .summary-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-link {
+      color: var(--intake-accent-dark);
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .intake-hero,
+      .intake-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .intake-summary-panel {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .intake-shell {
+        padding: 22px 18px 34px;
+      }
+
+      .intake-hero-card,
+      .intake-status-card,
+      .intake-form-panel,
+      .intake-summary-panel {
+        border-radius: 20px;
+        padding: 22px;
+      }
+
+      .input-grid,
+      .summary-kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .site-header,
+      .site-footer {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="Stacey Robinson home">
+        <span class="brand-mark">SR</span>
+        <span class="brand-copy">
+          <span class="brand-name">Stacey Robinson</span>
+          <span class="brand-role">Senior Instructional Designer | Learning Consultant</span>
+        </span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        Menu
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Me</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <main class="intake-shell">
+      <section class="intake-hero">
+        <article class="intake-hero-card">
+          <p class="intake-kicker">AI-Enabled Learning System</p>
+          <h1>Learning request intake that scopes the work before the build begins.</h1>
+          <p>
+            This demo captures the business problem, audience, desired performance, constraints, and source materials,
+            then turns that information into a first-pass instructional design recommendation. It is designed to reduce
+            vague requests, speed up triage, and create clearer conversations with sponsors and SMEs at project kickoff.
+          </p>
+          <div class="intake-chips" aria-label="Key features">
+            <span class="intake-chip">Scope clarity</span>
+            <span class="intake-chip">Needs analysis support</span>
+            <span class="intake-chip">Recommendation engine</span>
+            <span class="intake-chip">Persistent draft saving</span>
+          </div>
+        </article>
+
+        <aside class="intake-status-card" aria-label="How the demo works">
+          <h2 class="status-title">What this demo is doing</h2>
+          <p class="status-copy">
+            The form behaves like a structured intake conversation with an instructional designer. As fields are completed,
+            the panel on the right converts raw request data into a draft scope, likely delivery path, and design risks.
+          </p>
+          <ul class="status-list">
+            <li>
+              <strong>1. Capture the real business need</strong>
+              <span>Prompt the requester to describe the performance issue, not just ask for training.</span>
+            </li>
+            <li>
+              <strong>2. Surface readiness and constraints</strong>
+              <span>Highlight missing metrics, limited source content, and timeline pressure before design starts.</span>
+            </li>
+            <li>
+              <strong>3. Generate a first-pass recommendation</strong>
+              <span>Suggest whether the work points toward training, performance support, or deeper analysis.</span>
+            </li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="intake-layout">
+        <section class="intake-form-panel" aria-label="Learning request intake form">
+          <form id="intakeForm" novalidate>
+            <fieldset class="intake-section">
+              <legend>Requester Information</legend>
+              <p class="section-note">
+                Identify the requester and the person accountable for the business outcome so the work stays tied to an
+                actual sponsor, not just a generic training ask.
+              </p>
+              <div class="input-grid">
+                <div class="input-block">
+                  <label for="requesterName">Requester name</label>
+                  <input id="requesterName" name="requesterName" autocomplete="name" placeholder="Jordan Smith">
+                </div>
+                <div class="input-block">
+                  <label for="requesterEmail">Requester email</label>
+                  <input id="requesterEmail" name="requesterEmail" type="email" autocomplete="email" placeholder="jordan@company.com">
+                </div>
+                <div class="input-block">
+                  <label for="department">Department</label>
+                  <input id="department" name="department" placeholder="Customer Support">
+                </div>
+                <div class="input-block">
+                  <label for="sponsor">Project sponsor</label>
+                  <input id="sponsor" name="sponsor" placeholder="VP of Operations">
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-section">
+              <legend>Business Need</legend>
+              <p class="section-note">
+                Describe the performance issue in business language. The goal is to understand what is breaking, who it
+                affects, and what would happen if nothing changed.
+              </p>
+              <div class="input-grid">
+                <div class="input-block full">
+                  <label for="problem">What problem are you trying to solve?</label>
+                  <textarea id="problem" name="problem" placeholder="Describe the issue in business terms, including what is happening today and why it matters."></textarea>
+                  <span class="field-hint">Best answer: a performance or workflow problem, not just "we need training."</span>
+                </div>
+                <div class="input-block">
+                  <label for="impact">Business impact</label>
+                  <input id="impact" name="impact" placeholder="Rework, compliance risk, handle time, quality concerns">
+                </div>
+                <div class="input-block">
+                  <label for="metric">Metrics affected</label>
+                  <input id="metric" name="metric" placeholder="QA score, error rate, productivity, CSAT">
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-section">
+              <legend>Learner Audience</legend>
+              <p class="section-note">
+                Clarify who needs to perform differently. Audience shape determines whether the solution should scale,
+                stay lightweight, or be piloted first.
+              </p>
+              <div class="input-grid">
+                <div class="input-block">
+                  <label for="audience">Audience</label>
+                  <input id="audience" name="audience" placeholder="Tier 1 Support Agents">
+                </div>
+                <div class="input-block">
+                  <label for="learners">Estimated learners</label>
+                  <input id="learners" name="learners" type="number" min="0" step="1" placeholder="120">
+                </div>
+                <div class="input-block">
+                  <label for="experience">Experience level</label>
+                  <select id="experience" name="experience">
+                    <option value="">Select one</option>
+                    <option>New Hire</option>
+                    <option>Mixed Experience</option>
+                    <option>Experienced</option>
+                    <option>Manager</option>
+                  </select>
+                </div>
+                <div class="input-block">
+                  <label for="environment">Work environment</label>
+                  <select id="environment" name="environment">
+                    <option value="">Select one</option>
+                    <option>Remote</option>
+                    <option>Hybrid</option>
+                    <option>Onsite</option>
+                    <option>Field / Frontline</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-section">
+              <legend>Desired Outcomes</legend>
+              <p class="section-note">
+                Define the observable behavior or capability that should improve. The cleaner this gets, the better the
+                eventual design and measurement strategy will be.
+              </p>
+              <div class="input-grid">
+                <div class="input-block full">
+                  <label for="outcomes">What should learners be able to do after the intervention?</label>
+                  <textarea id="outcomes" name="outcomes" placeholder="Describe the specific actions, decisions, or behaviors learners need to perform."></textarea>
+                </div>
+                <div class="input-block">
+                  <label for="proof">How will success be measured?</label>
+                  <input id="proof" name="proof" placeholder="Reduce errors by 10 percent in 60 days">
+                </div>
+                <div class="input-block">
+                  <label for="rootCause">Primary root cause</label>
+                  <select id="rootCause" name="rootCause">
+                    <option value="">Select one</option>
+                    <option>Knowledge / skill gap</option>
+                    <option>Process confusion</option>
+                    <option>Tool / system issue</option>
+                    <option>Policy / compliance update</option>
+                    <option>Unclear / needs analysis required</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-section">
+              <legend>Delivery and Constraints</legend>
+              <p class="section-note">
+                Record the requester's preferences, but do not assume the preferred delivery is automatically the right
+                answer. Constraints often matter more than format preference.
+              </p>
+              <div class="input-grid">
+                <div class="input-block">
+                  <label for="delivery">Preferred delivery</label>
+                  <select id="delivery" name="delivery">
+                    <option value="">Select one</option>
+                    <option>eLearning</option>
+                    <option>Virtual ILT</option>
+                    <option>Instructor Led</option>
+                    <option>Microlearning</option>
+                    <option>Job Aid</option>
+                    <option>Video Demo</option>
+                    <option>Blended</option>
+                  </select>
+                </div>
+                <div class="input-block">
+                  <label for="timeline">Target launch date</label>
+                  <input id="timeline" name="timeline" type="date">
+                </div>
+                <div class="input-block full">
+                  <label for="constraints">Known constraints</label>
+                  <textarea id="constraints" name="constraints" placeholder="SME availability, policy deadlines, asset approvals, system limitations, localization needs"></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset class="intake-section">
+              <legend>SMEs and Existing Materials</legend>
+              <p class="section-note">
+                Good source content lowers build risk. Weak source content means the project may need more discovery,
+                more review cycles, or a narrower MVP approach.
+              </p>
+              <div class="input-grid">
+                <div class="input-block">
+                  <label for="sme">Primary SME</label>
+                  <input id="sme" name="sme" placeholder="Avery Chen">
+                </div>
+                <div class="input-block">
+                  <label for="supportLevel">SME support level</label>
+                  <select id="supportLevel" name="supportLevel">
+                    <option value="">Select one</option>
+                    <option>High availability</option>
+                    <option>Limited availability</option>
+                    <option>One-time review only</option>
+                    <option>Unknown</option>
+                  </select>
+                </div>
+                <div class="input-block full">
+                  <label for="materials">Existing materials</label>
+                  <textarea id="materials" name="materials" placeholder="SOPs, policy docs, screenshots, call examples, videos, job aids, process maps"></textarea>
+                </div>
+              </div>
+            </fieldset>
+
+            <div class="button-row">
+              <button class="button-accent" type="submit">Generate Intake Summary</button>
+              <button class="button-secondary" type="button" id="prefillBtn">Prefill Demo Data</button>
+              <button class="button-ghost" type="button" id="resetBtn">Clear Form</button>
+            </div>
+
+            <div class="toast" id="toast" role="status" aria-live="polite"></div>
+          </form>
+        </section>
+
+        <aside class="intake-summary-panel" aria-label="Generated scope summary">
+          <div class="summary-heading">
+            <h2>Scope Summary</h2>
+            <p>
+              This panel acts like a first-pass intake review. It converts the request into a business summary, likely
+              intervention path, and a short list of scoping risks.
+            </p>
+          </div>
+
+          <div class="summary-kpis">
+            <article class="summary-kpi">
+              <strong id="audienceSum">--</strong>
+              <span>Audience</span>
+            </article>
+            <article class="summary-kpi">
+              <strong id="launchSum">--</strong>
+              <span>Launch date</span>
+            </article>
+            <article class="summary-kpi">
+              <strong id="deliverySum">--</strong>
+              <span>Suggested path</span>
+            </article>
+            <article class="summary-kpi">
+              <strong id="scaleSum">--</strong>
+              <span>Delivery scale</span>
+            </article>
+          </div>
+
+          <article class="summary-card">
+            <h3>Business Need</h3>
+            <p id="problemSum">Complete the form to generate a summarized business need.</p>
+          </article>
+
+          <article class="summary-card">
+            <h3>Desired Outcomes</h3>
+            <p id="outcomesSum">--</p>
+          </article>
+
+          <article class="summary-card recommendation">
+            <span class="recommendation-tag">ID Recommendation</span>
+            <p id="recommendationSum">
+              Add the business need, audience, and root cause fields to generate a first-pass instructional design recommendation.
+            </p>
+          </article>
+
+          <article class="summary-card">
+            <h3>Likely Deliverables</h3>
+            <ul id="deliverablesSum">
+              <li>Waiting for enough intake detail to suggest deliverables.</li>
+            </ul>
+          </article>
+
+          <article class="summary-card">
+            <h3>Scoping Risks</h3>
+            <ul id="risksSum">
+              <li>No immediate risks identified yet. Complete more fields to surface likely friction points.</li>
+            </ul>
+          </article>
+
+          <div class="summary-footer">
+            <p class="summary-note">
+              This is an instructional design triage view, not an automated final solution. It is meant to support
+              earlier alignment, cleaner handoffs, and faster scoping.
+            </p>
+            <div class="summary-actions">
+              <button class="button-secondary" type="button" id="copySummaryBtn">Copy Summary</button>
+              <a class="button-ghost" href="projects.html">Back to Projects</a>
+            </div>
+            <a class="footer-link" href="contact.html">Want this turned into a real workflow? Let's talk.</a>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>&copy; 2026 Stacey Robinson</p>
+      <img class="footer-logo" src="stacey-botanical-logo.png" alt="Stacey Robinson botanical logo">
+      <div class="footer-contact">
+        <a href="mailto:stacrobi@gmail.com">stacrobi@gmail.com</a>
+        <a href="tel:7043023641">704-302-3641</a>
+        <a href="https://www.linkedin.com/in/stacrobi/" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const storageKey = "stacey_learning_intake_demo_v2";
+    const fields = {
+      requesterName: document.getElementById("requesterName"),
+      requesterEmail: document.getElementById("requesterEmail"),
+      department: document.getElementById("department"),
+      sponsor: document.getElementById("sponsor"),
+      problem: document.getElementById("problem"),
+      impact: document.getElementById("impact"),
+      metric: document.getElementById("metric"),
+      audience: document.getElementById("audience"),
+      learners: document.getElementById("learners"),
+      experience: document.getElementById("experience"),
+      environment: document.getElementById("environment"),
+      outcomes: document.getElementById("outcomes"),
+      proof: document.getElementById("proof"),
+      rootCause: document.getElementById("rootCause"),
+      delivery: document.getElementById("delivery"),
+      timeline: document.getElementById("timeline"),
+      constraints: document.getElementById("constraints"),
+      sme: document.getElementById("sme"),
+      supportLevel: document.getElementById("supportLevel"),
+      materials: document.getElementById("materials")
+    };
+
+    const audienceSum = document.getElementById("audienceSum");
+    const launchSum = document.getElementById("launchSum");
+    const deliverySum = document.getElementById("deliverySum");
+    const scaleSum = document.getElementById("scaleSum");
+    const problemSum = document.getElementById("problemSum");
+    const outcomesSum = document.getElementById("outcomesSum");
+    const recommendationSum = document.getElementById("recommendationSum");
+    const deliverablesSum = document.getElementById("deliverablesSum");
+    const risksSum = document.getElementById("risksSum");
+    const toast = document.getElementById("toast");
+    const intakeForm = document.getElementById("intakeForm");
+    const prefillBtn = document.getElementById("prefillBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const copySummaryBtn = document.getElementById("copySummaryBtn");
+
+    function valueOf(key) {
+      return (fields[key].value || "").trim();
+    }
+
+    function shortText(value, maxLength) {
+      const text = (value || "").trim();
+      if (!text) return "--";
+      return text.length > maxLength ? text.slice(0, maxLength - 1) + "..." : text;
+    }
+
+    function formatLaunchDate(value) {
+      if (!value) return "--";
+      const date = new Date(value + "T00:00:00");
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleDateString(undefined, {
+        month: "short",
+        day: "numeric",
+        year: "numeric"
+      });
+    }
+
+    function getScaleLabel(learnersCount) {
+      if (!learnersCount) return "--";
+      if (learnersCount < 25) return "Small cohort";
+      if (learnersCount < 100) return "Mid-size rollout";
+      return "Enterprise scale";
+    }
+
+    function buildRecommendation(data) {
+      const rootCause = data.rootCause.toLowerCase();
+      const delivery = data.delivery.toLowerCase();
+      const learnersCount = Number.parseInt(data.learners, 10) || 0;
+      const hasMetrics = Boolean(data.metric || data.proof);
+
+      if (!data.problem && !data.outcomes) {
+        return "Add the business need, audience, and root cause fields to generate a first-pass instructional design recommendation.";
+      }
+
+      const messages = [];
+
+      if (rootCause.includes("tool") || rootCause.includes("system")) {
+        messages.push("This request appears to be driven by a tool or system issue, so training alone is unlikely to fix the problem.");
+        messages.push("Start with workflow support such as a job aid, walkthrough, troubleshooting guide, or coordination with the system owner.");
+      } else if (rootCause.includes("process")) {
+        messages.push("The primary need appears to be process clarification, so a full course may be excessive unless the workflow is highly complex or high risk.");
+        messages.push("Prioritize decision guidance, a clear SOP, and reinforcement in the flow of work.");
+      } else if (rootCause.includes("policy") || rootCause.includes("compliance")) {
+        messages.push("This looks like a policy or compliance update, which points toward concise, high-accountability learning with scenario examples and a clear acknowledgement path.");
+      } else if (rootCause.includes("knowledge") || rootCause.includes("skill")) {
+        messages.push("This appears to be a true knowledge or skill gap, so a targeted learning intervention is justified.");
+      } else {
+        messages.push("The root cause is still unclear, so a short discovery step is recommended before committing to a build.");
+      }
+
+      if (delivery.includes("job aid")) {
+        messages.push("The requester preference points toward performance support, which likely means a lightweight asset can solve the problem faster than a full course.");
+      } else if (delivery.includes("microlearning")) {
+        messages.push("A modular microlearning series would fit well if the behaviors can be broken into discrete tasks or decisions.");
+      } else if (delivery.includes("elearning")) {
+        messages.push("If self-paced delivery is required, scenario-based eLearning with realistic practice would be the strongest first-pass design choice.");
+      } else if (delivery.includes("virtual ilt") || delivery.includes("instructor led")) {
+        messages.push("A live session makes sense if discussion, coaching, or guided practice is essential to the behavior change.");
+      } else if (delivery.includes("video")) {
+        messages.push("A short explainer or software demo video should be paired with a quick-reference asset so the content remains usable after viewing.");
+      } else if (delivery.includes("blended")) {
+        messages.push("A blended path is appropriate if learners need both scalable instruction and applied practice.");
+      }
+
+      if (learnersCount >= 100) {
+        messages.push("Because the audience is large, standardization, scalability, and reusable reinforcement assets should be built into scope from the beginning.");
+      } else if (learnersCount > 0 && learnersCount < 25) {
+        messages.push("Because the audience is small, a pilot, coaching-based option, or facilitated rollout may be more efficient than a heavier development path.");
+      }
+
+      if (!hasMetrics) {
+        messages.push("The request still needs a sharper success metric so the team can define completion criteria and post-launch evidence of impact.");
+      }
+
+      return messages.join(" ");
+    }
+
+    function buildDeliverables(data) {
+      const rootCause = data.rootCause.toLowerCase();
+      const delivery = data.delivery.toLowerCase();
+      const items = [];
+
+      if (!data.problem && !data.outcomes) {
+        return ["Waiting for enough intake detail to suggest deliverables."];
+      }
+
+      if (rootCause.includes("tool") || rootCause.includes("system")) {
+        items.push("Job aid or click-path reference for the system workflow");
+        items.push("Short walkthrough video or annotated demo");
+        items.push("Escalation log of system friction points for non-training follow-up");
+      } else if (rootCause.includes("process")) {
+        items.push("Process map or SOP with decision points");
+        items.push("Quick-reference guide for common scenarios");
+        items.push("Manager reinforcement prompts or team huddle guide");
+      } else if (rootCause.includes("policy") || rootCause.includes("compliance")) {
+        items.push("Compliance update module or policy briefing");
+        items.push("Knowledge check or acknowledgement step");
+        items.push("Manager talking points and policy reference sheet");
+      } else if (rootCause.includes("knowledge") || rootCause.includes("skill")) {
+        if (delivery.includes("microlearning")) {
+          items.push("Microlearning series broken into task-level modules");
+          items.push("Scenario practice with simple knowledge checks");
+          items.push("Reinforcement job aid or one-page reference");
+        } else if (delivery.includes("elearning")) {
+          items.push("Interactive eLearning module with scenarios");
+          items.push("Learner practice and application checks");
+          items.push("Support tool for use after completion");
+        } else if (delivery.includes("virtual ilt") || delivery.includes("instructor led")) {
+          items.push("Facilitator guide and participant materials");
+          items.push("Live practice activities or discussion prompts");
+          items.push("Post-session support tool or reinforcement asset");
+        } else {
+          items.push("Targeted training solution aligned to the skill gap");
+          items.push("Practice activity or worked examples");
+          items.push("Reinforcement asset for the flow of work");
+        }
+      } else {
+        items.push("Short needs-analysis conversation guide");
+        items.push("Draft problem statement and audience clarification notes");
+        items.push("Decision memo on whether training is the right intervention");
+      }
+
+      return items;
+    }
+
+    function buildRisks(data) {
+      const risks = [];
+      const learnersCount = Number.parseInt(data.learners, 10) || 0;
+
+      if (!data.problem) {
+        risks.push("The business problem is still vague, which increases the chance of building training for the wrong issue.");
+      }
+
+      if (!data.audience) {
+        risks.push("Audience definition is missing, making scope and delivery assumptions unreliable.");
+      }
+
+      if (!data.metric && !data.proof) {
+        risks.push("No clear success metric is defined yet, so impact may be hard to validate after launch.");
+      }
+
+      if (!data.materials) {
+        risks.push("Existing source material is missing, which usually drives more SME dependence and slower review cycles.");
+      }
+
+      if (data.supportLevel.toLowerCase().includes("limited") || data.supportLevel.toLowerCase().includes("one-time")) {
+        risks.push("SME access appears constrained, so discovery and validation may become a schedule risk.");
+      }
+
+      if (data.constraints) {
+        risks.push("The listed constraints should be validated during scoping so the team does not under-size effort or timeline.");
+      }
+
+      if (data.timeline) {
+        const now = new Date();
+        const launchDate = new Date(data.timeline + "T00:00:00");
+        const daysUntilLaunch = Math.round((launchDate - now) / 86400000);
+        if (!Number.isNaN(daysUntilLaunch) && daysUntilLaunch < 21) {
+          risks.push("The requested launch date is close, so a phased release or MVP may be safer than a full build.");
+        }
+      }
+
+      if (learnersCount >= 100 && !data.delivery) {
+        risks.push("A large audience is named, but the rollout approach is still unclear.");
+      }
+
+      return risks.length ? risks : ["No major scoping risks are surfaced yet. Keep validating assumptions with the sponsor and SME."];
+    }
+
+    function deriveSuggestedPath(data) {
+      const rootCause = data.rootCause.toLowerCase();
+      const delivery = data.delivery;
+
+      if (rootCause.includes("tool") || rootCause.includes("system")) return "Support tool";
+      if (rootCause.includes("process")) return "Process support";
+      if (rootCause.includes("policy") || rootCause.includes("compliance")) return "Compliance learning";
+      if (rootCause.includes("knowledge") || rootCause.includes("skill")) return delivery || "Targeted training";
+      return "Needs analysis";
+    }
+
+    function collectData() {
+      return {
+        requesterName: valueOf("requesterName"),
+        requesterEmail: valueOf("requesterEmail"),
+        department: valueOf("department"),
+        sponsor: valueOf("sponsor"),
+        problem: valueOf("problem"),
+        impact: valueOf("impact"),
+        metric: valueOf("metric"),
+        audience: valueOf("audience"),
+        learners: valueOf("learners"),
+        experience: valueOf("experience"),
+        environment: valueOf("environment"),
+        outcomes: valueOf("outcomes"),
+        proof: valueOf("proof"),
+        rootCause: valueOf("rootCause"),
+        delivery: valueOf("delivery"),
+        timeline: valueOf("timeline"),
+        constraints: valueOf("constraints"),
+        sme: valueOf("sme"),
+        supportLevel: valueOf("supportLevel"),
+        materials: valueOf("materials")
+      };
+    }
+
+    function saveDraft() {
+      const data = {};
+      Object.keys(fields).forEach((key) => {
+        data[key] = fields[key].value;
+      });
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    }
+
+    function restoreDraft() {
+      const raw = localStorage.getItem(storageKey);
+      if (!raw) return;
+      try {
+        const parsed = JSON.parse(raw);
+        Object.keys(fields).forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+            fields[key].value = parsed[key];
+          }
+        });
+      } catch (error) {
+        localStorage.removeItem(storageKey);
+      }
+    }
+
+    function setList(element, items) {
+      element.innerHTML = "";
+      items.forEach((item) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        element.appendChild(li);
+      });
+    }
+
+    function updateSummary() {
+      const data = collectData();
+      const learnersCount = Number.parseInt(data.learners, 10) || 0;
+
+      audienceSum.textContent = data.audience || "--";
+      launchSum.textContent = formatLaunchDate(data.timeline);
+      deliverySum.textContent = deriveSuggestedPath(data);
+      scaleSum.textContent = getScaleLabel(learnersCount);
+      problemSum.textContent = shortText(data.problem, 220);
+      outcomesSum.textContent = shortText(data.outcomes, 200);
+      recommendationSum.textContent = buildRecommendation(data);
+      setList(deliverablesSum, buildDeliverables(data));
+      setList(risksSum, buildRisks(data));
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.style.display = "block";
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => {
+        toast.style.display = "none";
+      }, 3200);
+    }
+
+    function prefillDemo() {
+      fields.requesterName.value = "Jordan Smith";
+      fields.requesterEmail.value = "jordan@company.com";
+      fields.department.value = "Customer Support";
+      fields.sponsor.value = "VP of Operations";
+      fields.problem.value = "New hires are taking too long to reach productivity, and billing-related customer escalations are increasing because agents are not following the CRM workflow consistently during live calls.";
+      fields.impact.value = "Longer handle times, lower quality scores, billing errors, and inconsistent customer experience";
+      fields.metric.value = "AHT, QA score, billing error rate, time-to-proficiency";
+      fields.audience.value = "Tier 1 Support Agents";
+      fields.learners.value = "120";
+      fields.experience.value = "New Hire";
+      fields.environment.value = "Remote";
+      fields.outcomes.value = "Agents can locate the billing view, interpret balances correctly, explain open items clearly, and document the interaction using the standard workflow without escalation.";
+      fields.proof.value = "Reduce billing-related errors by 10 percent and improve QA by 5 points within 60 days";
+      fields.rootCause.value = "Knowledge / skill gap";
+      fields.delivery.value = "Microlearning";
+      fields.timeline.value = "2026-05-15";
+      fields.constraints.value = "SME availability is limited to one hour per week, and updated screenshots require compliance review before release.";
+      fields.sme.value = "Avery Chen";
+      fields.supportLevel.value = "Limited availability";
+      fields.materials.value = "Draft SOP, billing policy update, screenshot library, and two recorded call examples";
+      saveDraft();
+      updateSummary();
+      showToast("Demo data loaded. The summary panel has been updated with a first-pass intake review.");
+    }
+
+    function clearForm() {
+      intakeForm.reset();
+      localStorage.removeItem(storageKey);
+      updateSummary();
+      showToast("Draft cleared.");
+    }
+
+    async function copySummary() {
+      const text = [
+        "Learning Request Intake Summary",
+        "",
+        "Audience: " + audienceSum.textContent,
+        "Launch date: " + launchSum.textContent,
+        "Suggested path: " + deliverySum.textContent,
+        "Scale: " + scaleSum.textContent,
+        "",
+        "Business need:",
+        problemSum.textContent,
+        "",
+        "Desired outcomes:",
+        outcomesSum.textContent,
+        "",
+        "Recommendation:",
+        recommendationSum.textContent,
+        "",
+        "Likely deliverables:",
+        ...Array.from(deliverablesSum.querySelectorAll("li")).map((li) => "- " + li.textContent),
+        "",
+        "Scoping risks:",
+        ...Array.from(risksSum.querySelectorAll("li")).map((li) => "- " + li.textContent)
+      ].join("\n");
+
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Summary copied to clipboard.");
+      } catch (error) {
+        showToast("Clipboard access was blocked, but the summary is still visible on the page.");
+      }
+    }
+
+    Object.values(fields).forEach((field) => {
+      field.addEventListener("input", () => {
+        saveDraft();
+        updateSummary();
+      });
+      field.addEventListener("change", () => {
+        saveDraft();
+        updateSummary();
+      });
+    });
+
+    intakeForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      saveDraft();
+      updateSummary();
+      showToast("Intake summary generated.");
+    });
+
+    prefillBtn.addEventListener("click", prefillDemo);
+    resetBtn.addEventListener("click", clearForm);
+    copySummaryBtn.addEventListener("click", copySummary);
+
+    restoreDraft();
+    updateSummary();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+  <title id="title">Enterprise Onboarding Experience thumbnail</title>
+  <desc id="desc">Abstract editorial thumbnail for an onboarding learning project.</desc>
+  <rect width="800" height="600" fill="#f5eee6"/>
+  <rect x="64" y="64" width="672" height="472" rx="28" fill="#fffaf4" stroke="#ded6cb" stroke-width="4"/>
+  <circle cx="168" cy="168" r="52" fill="#b66f44" opacity="0.18"/>
+  <path d="M160 166h96M160 208h192M160 250h152" stroke="#b66f44" stroke-width="10" stroke-linecap="round"/>
+  <rect x="454" y="138" width="180" height="220" rx="18" fill="#efe4d7"/>
+  <rect x="486" y="178" width="116" height="12" rx="6" fill="#b66f44"/>
+  <rect x="486" y="214" width="86" height="12" rx="6" fill="#c9b39f"/>
+  <rect x="486" y="250" width="102" height="12" rx="6" fill="#c9b39f"/>
+  <text x="64" y="474" fill="#1f1b18" font-family="DM Sans, Arial, sans-serif" font-size="28" letter-spacing="4">ONBOARDING</text>
+  <text x="64" y="518" fill="#1f1b18" font-family="Cormorant Garamond, Georgia, serif" font-size="56">Enterprise Experience</text>
+</svg>
